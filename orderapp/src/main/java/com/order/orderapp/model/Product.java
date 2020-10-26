@@ -4,51 +4,28 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name="product")
-public class Product implements Serializable {
+@Table(name="tb_product")
+public class Product extends Item implements Serializable{
 
-    private static final long serialVersionUID = 1L;
+    @Column(name="quantity")
+    private int quantity;
+    @Column(name="item_status")
+    @Enumerated(EnumType.STRING)
+    private ItemStatus itemStatus;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-    @Column(name="description")
-    private String description;
-    @Column(name="price")
-    private double price;
-//    @Column(name="item_status")
-//    private ItemStatus itemStatus;
-
-
-    public long getId() {
-        return id;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
-    public String getDescription() {
-        return description;
+    public ItemStatus getItemStatus() {
+        return itemStatus;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setItemStatus(ItemStatus itemStatus) {
+        this.itemStatus = itemStatus;
     }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-//    public ItemStatus getItemStatus() {
-//        return itemStatus;
-//    }
-//
-//    public void setItemStatus(ItemStatus itemStatus) {
-//        this.itemStatus = itemStatus;
-//    }
 }

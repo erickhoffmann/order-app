@@ -4,42 +4,17 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name="service")
-public class Service implements Serializable {
+@Table(name="tb_service")
+public class Service extends Item implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Column(name="available_hours")
+    private double availableHours;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-    @Column(name="description")
-    private String description;
-    @Column(name="price")
-    private double price;
-//    private ItemStatus itemStatus;
-
-
-    public long getId() {
-        return id;
+    public double getAvailableHours() {
+        return availableHours;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
+    public void setAvailableHours(double availableHours) {
+        this.availableHours = availableHours;
     }
 }
