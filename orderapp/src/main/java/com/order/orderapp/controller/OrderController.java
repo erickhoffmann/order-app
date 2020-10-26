@@ -32,7 +32,7 @@ public class OrderController {
     @PostMapping("/order")
     public Order insertOrder(@RequestBody OrderInput orderInput){
         Order order = orderIO.mapTo(orderInput);
-        return orderService.insertOrder(order);
+        return orderService.insertUpdateOrder(order);
     }
 
     @DeleteMapping("/order/{id}")
@@ -43,6 +43,6 @@ public class OrderController {
     @PutMapping("/order")
     public Order updateOrder(@RequestBody OrderInput orderInput){
         Order order = orderIO.mapTo(orderInput);
-        return orderService.updateOrder(order);
+        return orderService.insertUpdateOrder(order);
     }
 }

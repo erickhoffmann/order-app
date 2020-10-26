@@ -1,6 +1,9 @@
 package com.order.orderapp.service;
 
+import com.order.orderapp.model.Item;
 import com.order.orderapp.model.Order;
+import com.order.orderapp.model.OrderItem;
+import com.order.orderapp.model.Product;
 import com.order.orderapp.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +24,7 @@ public class OrderService {
         return orderRepository.findById(id);
     }
 
-    public Order insertOrder(Order order){
+    public Order insertUpdateOrder(Order order){
         return orderRepository.save(order);
     }
 
@@ -30,7 +33,16 @@ public class OrderService {
         orderRepository.delete(orderDelete);
     }
 
-    public Order updateOrder(Order order){
-        return orderRepository.save(order);
+    private void calculateProductDiscount(Order order){
+
+        double totalValue = 0;
+        double totalProductValue = 0;
+
+        for(OrderItem orderItem: order.getItems()){
+
+            if(orderItem.getItem() instanceof Product){
+
+            }
+        }
     }
 }
