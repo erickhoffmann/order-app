@@ -1,7 +1,7 @@
-package com.order.orderapp.resource;
+package com.order.orderapp.controller;
 
 import com.order.orderapp.model.Service;
-import com.order.orderapp.repository.ServiceRepository;
+import com.order.orderapp.service.ServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,33 +9,33 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api")
-public class ServiceResouce {
+public class ServiceController {
 
     @Autowired
-    ServiceRepository serviceRepository;
+    ServiceService serviceService;
 
     @GetMapping("/services")
     public List<Service> listServices(){
-        return (List<Service>) serviceRepository.findAll();
+        return serviceService.listServices();
     }
 
     @GetMapping("/service/{id}")
     public Service getService(@PathVariable(value = "id")long id){
-        return serviceRepository.findById(id);
+        return serviceService.getService(id);
     }
 
     @PostMapping("/service")
     public Service insertService(@RequestBody Service service){
-        return serviceRepository.save(service);
+        return serviceService.insertService(service);
     }
 
     @DeleteMapping("/service")
     public void deleteService(@RequestBody Service service){
-        serviceRepository.delete(service);
+        serviceService.deleteService(service);
     }
 
     @PutMapping("/service")
     public Service updateService(@RequestBody Service service){
-        return serviceRepository.save(service);
+        return serviceService.updateService(service);
     }
 }

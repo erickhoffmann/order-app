@@ -1,7 +1,7 @@
-package com.order.orderapp.resource;
+package com.order.orderapp.controller;
 
+import com.order.orderapp.service.ProductService;
 import com.order.orderapp.model.Product;
-import com.order.orderapp.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,33 +9,33 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api")
-public class ProductResouce {
+public class ProductController {
 
     @Autowired
-    ProductRepository productRepository;
+    ProductService productService;
 
     @GetMapping("/products")
-    public List<Product> listProduts(){
-        return (List<Product>) productRepository.findAll();
+    public List<Product> listProducts(){
+        return productService.listProducts();
     }
 
     @GetMapping("/product/{id}")
     public Product getProduct(@PathVariable(value = "id")long id){
-        return productRepository.findById(id);
+        return productService.getProduct(id);
     }
 
     @PostMapping("/product")
     public Product insertProduct(@RequestBody Product product){
-        return productRepository.save(product);
+        return productService.insertProduct(product);
     }
 
     @DeleteMapping("/product")
     public void deleteProduct(@RequestBody Product product){
-        productRepository.delete(product);
+        productService.deleteProduct(product);
     }
 
     @PutMapping("/product")
     public Product updateProduct(@RequestBody Product product){
-        return productRepository.save(product);
+        return productService.updateProduct(product);
     }
 }

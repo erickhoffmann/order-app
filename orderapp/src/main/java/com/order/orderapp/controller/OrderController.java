@@ -1,7 +1,8 @@
-package com.order.orderapp.resource;
+package com.order.orderapp.controller;
 
 import com.order.orderapp.model.Order;
 import com.order.orderapp.repository.OrderRepository;
+import com.order.orderapp.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,33 +10,33 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api")
-public class OrderResouce {
+public class OrderController {
 
     @Autowired
-    OrderRepository orderRepository;
+    OrderService orderService;
 
     @GetMapping("/orders")
     public List<Order> listOrders(){
-        return (List<Order>) orderRepository.findAll();
+        return orderService.listOrders();
     }
 
     @GetMapping("/order/{id}")
     public Order getOrder(@PathVariable(value = "id")long id){
-        return orderRepository.findById(id);
+        return orderService.getOrder(id);
     }
 
     @PostMapping("/order")
     public Order insertOrder(@RequestBody Order order){
-        return orderRepository.save(order);
+        return orderService.insertOrder(order);
     }
 
     @DeleteMapping("/order")
     public void deleteOrder(@RequestBody Order order){
-        orderRepository.delete(order);
+        orderService.deleteOrder(order);
     }
 
     @PutMapping("/order")
     public Order updateOrder(@RequestBody Order order){
-        return orderRepository.save(order);
+        return orderService.updateOrder(order);
     }
 }
