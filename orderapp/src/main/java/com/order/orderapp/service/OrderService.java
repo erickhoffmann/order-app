@@ -25,8 +25,9 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
-    public void deleteOrder(Order order){
-        orderRepository.delete(order);
+    public void deleteOrder(long id){
+        Order orderDelete = getOrder(id);
+        orderRepository.delete(orderDelete);
     }
 
     public Order updateOrder(Order order){

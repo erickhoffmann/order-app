@@ -1,5 +1,7 @@
 package com.order.orderapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -12,12 +14,15 @@ public class OrderItem implements Serializable {
     private long id;
     @Column(name="price")
     private double price;
-    @OneToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_item", nullable = false)
     private Item item;
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_order", nullable = false)
     private Order order;
+
+    public OrderItem() {}
 
     public long getId() {
         return id;
@@ -41,5 +46,13 @@ public class OrderItem implements Serializable {
 
     public void setItem(Item item) {
         this.item = item;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }

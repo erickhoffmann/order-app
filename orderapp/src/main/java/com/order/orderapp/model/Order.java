@@ -21,8 +21,11 @@ public class Order implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name="order_status")
     private OrderStatus orderStatus;
-    @OneToMany(mappedBy = "order", targetEntity = OrderItem.class, orphanRemoval = true)
+//    @OneToMany(mappedBy = "order", targetEntity = OrderItem.class, orphanRemoval = true)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<OrderItem> items = new ArrayList<>();
+
+    public Order() {}
 
     public long getId() {
         return id;
@@ -61,6 +64,9 @@ public class Order implements Serializable {
     }
 
     public void setItems(List<OrderItem> items) {
+        for(OrderItem orderItem: items){
+            orderItem.setOrder(this);
+        }
         this.items = items;
     }
 }
