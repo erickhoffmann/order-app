@@ -8,28 +8,29 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ProductService {
+public class ProductService implements ItemServiceInterface<Product> {
 
     @Autowired
     ProductRepository productRepository;
 
-    public List<Product> listProducts(){
+    @Override
+    public List<Product> list() {
         return (List<Product>) productRepository.findAll();
     }
 
-    public Product getProduct(long id){
+    @Override
+    public Product get(long id) {
         return productRepository.findById(id);
     }
 
-    public Product insertProduct(Product product){
+    @Override
+    public Product insertUpdate(Product product) {
         return productRepository.save(product);
     }
 
-    public void deleteProduct(Product product){
-        productRepository.delete(product);
-    }
-
-    public Product updateProduct(Product product){
-        return productRepository.save(product);
+    @Override
+    public void delete(long idItem) {
+        Product removeProduct = get(idItem);
+        productRepository.delete(removeProduct);
     }
 }

@@ -3,9 +3,8 @@ package com.order.orderapp.appcontroller;
 import com.order.orderapp.dto.input.OrderItemInput;
 import com.order.orderapp.model.Item;
 import com.order.orderapp.model.OrderItem;
-import com.order.orderapp.service.OrderService;
-import com.order.orderapp.service.ProductService;
-import com.order.orderapp.service.ServiceService;
+import com.order.orderapp.service.*;
+import com.order.orderapp.util.ItemType;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.spi.MappingContext;
@@ -37,13 +36,19 @@ public class OrderItemIO {
             orderItem.setPrice(orderItemInput.getPrice());
             long idItem = orderItemInput.getIdItem();
             Item item = null;
-            switch (orderItemInput.getType()){
-                case "product":
-                    item = productService.getProduct(idItem);
-                    break;
-                case "service":
-                    item = serviceService.getService(idItem);
+
+            ItemType itemType = ItemType.valueOf(orderItemInput.getType());
+            if(itemType == null){
+                try {
+                    throw new Exception("Invalid \"type\" argument!");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
+
+            ItemServiceInterface serviceInterface = getService(itemType);
+            item = (Item) serviceInterface.get(idItem);
+
             orderItem.setItem(item);
 
             orderItem.setOrder(orderService.getOrder(orderItemInput.getIdOrder()));
@@ -59,5 +64,16 @@ public class OrderItemIO {
 
     public OrderItem mapTo(OrderItemInput orderItemInput) {
         return this.modelMapper.map(orderItemInput, OrderItem.class);
+    }
+
+    private ItemServiceInterface getService(ItemType itemType){
+        switch (itemType){
+            case PRODUCT:
+                return productService;
+            case SERVICE:
+                return serviceService;
+            default:
+                return null;
+        }
     }
 }
