@@ -2,12 +2,17 @@ package com.order.orderapp.appcontroller;
 
 import com.order.orderapp.dto.input.OrderInput;
 import com.order.orderapp.model.*;
+import com.order.orderapp.service.ItemServiceInterface;
+import com.order.orderapp.service.ProductService;
+import com.order.orderapp.service.ServiceService;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.spi.MappingContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -17,19 +22,25 @@ public class OrderIO {
 
     private ModelMapper modelMapper;
 
+    @Autowired
+    private ProductService productService;
+
+    @Autowired
+    private ServiceService serviceService;
+
     final Converter<OrderInput, Order> orderConverter = new Converter<OrderInput, Order>() {
 
         @Override
         public Order convert(MappingContext<OrderInput, Order> context) {
             OrderInput orderInput = context.getSource();
-            // @formatter:off
+
             Order order = new Order();
             order.setId(orderInput.getId());
-            order.setDateTime(orderInput.getDateTime());
+            order.setDateTime(Calendar.getInstance());
             order.setDiscount(orderInput.getDiscount());
             order.setOrderStatus(orderInput.getOrderStatus());
             order.setItems(getItens(orderInput.getItems()));
-            // @formatter:on
+
             return order;
         }
     };
@@ -50,24 +61,21 @@ public class OrderIO {
 
         for(Object o: items){
             LinkedHashMap generic = ((LinkedHashMap)o);
-            int id = (int) generic.get("id");
+
+            int idOrderItem = 0;
+            if(generic.containsKey("id")){
+                idOrderItem = (int) generic.get("id");
+            };
+            int idItem = (int) generic.get("idItem");
             String type = (String) generic.get("type");
-            LinkedHashMap itemHash = (LinkedHashMap) generic.get("item");
 
-            Item item = null;
-
-            if(type.equalsIgnoreCase("product")){
-                item = getProduct(itemHash);
-            }
-
-            if(type.equalsIgnoreCase("service")){
-                item = getService(itemHash);
-            }
+            ItemServiceInterface service = getService(type);
+            Item item = (Item) service.get(idItem);
 
             if(item == null) continue;
 
             orderItem = new OrderItem();
-            orderItem.setId(id);
+            orderItem.setId(idOrderItem);
             orderItem.setPrice(item.getPrice());
             orderItem.setItem(item);
 
@@ -77,30 +85,17 @@ public class OrderIO {
         return orderItemList;
     }
 
-    private Item getProduct(LinkedHashMap itemHash){
+    private ItemServiceInterface getService(String type){
 
-        Product product = new Product();
-        int id = (int) itemHash.get("id");
-        product.setId(id);
-        product.setDescription((String) itemHash.get("description"));
-        product.setPrice((double) itemHash.get("price"));
-        product.setQuantity((int) itemHash.get("quantity"));
-        String status = (String) itemHash.get("itemStatus");
-        ItemStatus itemStatus = ItemStatus.valueOf(status);
-        product.setItemStatus(itemStatus);
+        if(type ==null) return null;
 
-        return product;
-    }
-
-    private Item getService(LinkedHashMap itemHash){
-
-        Service service = new Service();
-        int id = (int) itemHash.get("id");
-        service.setId(id);
-        service.setDescription((String) itemHash.get("description"));
-        service.setPrice((double) itemHash.get("price"));
-        service.setAvailableHours((double) itemHash.get("availableHours"));
-
-        return service;
+        switch (type){
+            case "product":
+                return productService;
+            case "service":
+                return serviceService;
+            default:
+                return null;
+        }
     }
 }

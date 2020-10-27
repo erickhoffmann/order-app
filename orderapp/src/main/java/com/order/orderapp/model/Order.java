@@ -18,6 +18,8 @@ public class Order implements Serializable {
     private Calendar dateTime;
     @Column(name="discount")
     private double discount;
+    @Column(name="total_value")
+    private double totalValue;
     @Enumerated(EnumType.STRING)
     @Column(name="order_status")
     private OrderStatus orderStatus;
@@ -51,6 +53,10 @@ public class Order implements Serializable {
         this.discount = discount;
     }
 
+    public double getTotalValue() {return totalValue;}
+
+    public void setTotalValue(double totalValue) {this.totalValue = totalValue;}
+
     public OrderStatus getOrderStatus() {
         return orderStatus;
     }
@@ -61,6 +67,14 @@ public class Order implements Serializable {
 
     public List<OrderItem> getItems() {
         return items;
+    }
+
+    public void addOrderItem(OrderItem orderItem){
+        this.items.add(orderItem);
+    }
+
+    public void removeOrderItem(OrderItem orderItem){
+        this.items.remove(orderItem);
     }
 
     public void setItems(List<OrderItem> items) {

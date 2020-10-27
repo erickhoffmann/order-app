@@ -19,7 +19,7 @@ public class OrderItemController {
     @Autowired
     OrderItemIO orderItemIO;
 
-    @GetMapping("/orderitem/{idOrder}")
+    @GetMapping("/orderitem/list/{idOrder}")
     public List<OrderItem> listServices(@PathVariable(value = "idOrder")long idOrder){
         return orderItemService.listOrderItems(idOrder);
     }

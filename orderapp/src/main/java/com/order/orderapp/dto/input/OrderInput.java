@@ -1,16 +1,13 @@
 package com.order.orderapp.dto.input;
 
-import com.order.orderapp.model.OrderItem;
 import com.order.orderapp.model.OrderStatus;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class OrderInput {
 
     private long id;
-    private Calendar dateTime;
     private double discount;
     private OrderStatus orderStatus;
     private List<Object> items = new ArrayList<>();
@@ -21,14 +18,6 @@ public class OrderInput {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public Calendar getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(Calendar dateTime) {
-        this.dateTime = dateTime;
     }
 
     public double getDiscount() {

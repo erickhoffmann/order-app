@@ -6,7 +6,7 @@ import com.order.orderapp.model.Item;
 import com.order.orderapp.service.ProductService;
 import com.order.orderapp.service.ItemServiceInterface;
 import com.order.orderapp.service.ServiceService;
-import com.order.orderapp.util.ItemType;
+import com.order.orderapp.model.ItemType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +26,7 @@ public class ItemController {
     @GetMapping("/item/{type}")
     public List<Item> listAll(@PathVariable(value = "type")String type) throws Exception {
 
-        ItemType itemType = ItemType.valueOf(type);
+        ItemType itemType = ItemType.valueOf(type.toUpperCase());
         if(itemType == null){
             throw new Exception("Invalid \"type\" argument!");
         }
@@ -38,7 +38,7 @@ public class ItemController {
     public Item getItem(@PathVariable(value = "type")String type,
                         @PathVariable(value = "id")long id) throws Exception {
 
-        ItemType itemType = ItemType.valueOf(type);
+        ItemType itemType = ItemType.valueOf(type.toUpperCase());
         if(itemType == null){
             throw new Exception("Invalid \"type\" argument!");
         }
@@ -49,7 +49,7 @@ public class ItemController {
     @PostMapping("/item")
     public Item insertItem(@RequestBody ProductServiceInput productServiceInput) throws Exception {
 
-        ItemType itemType = ItemType.valueOf(productServiceInput.getType());
+        ItemType itemType = ItemType.valueOf(productServiceInput.getType().toUpperCase());
         if(itemType == null){
             throw new Exception("Invalid \"type\" argument!");
         }
@@ -66,7 +66,7 @@ public class ItemController {
     public void deleteItem(@PathVariable(value = "type")String type,
                               @PathVariable(value = "id")long id) throws Exception {
 
-        ItemType itemType = ItemType.valueOf(type);
+        ItemType itemType = ItemType.valueOf(type.toUpperCase());
         if(itemType == null){
             throw new Exception("Invalid \"type\" argument!");
         }
@@ -76,7 +76,7 @@ public class ItemController {
 
     @PutMapping("/item")
     public Item updateProduct(@RequestBody ProductServiceInput productServiceInput) throws Exception {
-        ItemType itemType = ItemType.valueOf(productServiceInput.getType());
+        ItemType itemType = ItemType.valueOf(productServiceInput.getType().toUpperCase());
         if(itemType == null){
             throw new Exception("Invalid \"type\" argument!");
         }

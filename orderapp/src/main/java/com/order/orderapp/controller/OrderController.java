@@ -1,6 +1,7 @@
 package com.order.orderapp.controller;
 
 import com.order.orderapp.appcontroller.OrderIO;
+import com.order.orderapp.dto.input.DiscountInput;
 import com.order.orderapp.dto.input.OrderInput;
 import com.order.orderapp.model.Order;
 import com.order.orderapp.service.OrderService;
@@ -44,5 +45,10 @@ public class OrderController {
     public Order updateOrder(@RequestBody OrderInput orderInput){
         Order order = orderIO.mapTo(orderInput);
         return orderService.insertUpdateOrder(order);
+    }
+
+    @PutMapping("/order/discount")
+    public Order updateOrder(@RequestBody DiscountInput discountInput){
+        return orderService.apllyDiscount(discountInput.getIdOrder(), discountInput.getDiscount());
     }
 }

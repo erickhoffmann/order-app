@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.order.orderapp.model.Item;
 import com.order.orderapp.model.Product;
 import com.order.orderapp.model.Service;
-import com.order.orderapp.util.ItemType;
+import com.order.orderapp.model.ItemType;
 
 import java.util.HashMap;
 

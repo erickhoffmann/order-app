@@ -30,6 +30,12 @@ public class ServiceService implements ItemServiceInterface<Service> {
     @Override
     public void delete(long idItem) {
         Service removeService = get(idItem);
-        serviceRepository.delete(removeService);
+
+        if(removeService != null) {
+            long numAssociation = serviceRepository.serviceInOrderItem(removeService.getId());
+            if (numAssociation == 0) {
+                serviceRepository.delete(removeService);
+            }
+        }
     }
 }

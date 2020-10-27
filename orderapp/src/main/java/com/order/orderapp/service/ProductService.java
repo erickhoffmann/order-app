@@ -30,7 +30,15 @@ public class ProductService implements ItemServiceInterface<Product> {
 
     @Override
     public void delete(long idItem) {
+
         Product removeProduct = get(idItem);
-        productRepository.delete(removeProduct);
+
+        if(removeProduct != null) {
+
+            long numAssociation = productRepository.productInOrderItem(removeProduct.getId());
+            if(numAssociation == 0) {
+                productRepository.delete(removeProduct);
+            }
+        }
     }
 }

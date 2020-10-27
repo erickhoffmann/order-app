@@ -1,6 +1,8 @@
 package com.order.orderapp.service;
 
+import com.order.orderapp.model.ItemStatus;
 import com.order.orderapp.model.OrderItem;
+import com.order.orderapp.model.Product;
 import com.order.orderapp.repository.OrderItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +16,7 @@ public class OrderItemService {
     OrderItemRepository orderItemRepository;
 
     public List<OrderItem> listOrderItems(long idOrder){
-        return (List<OrderItem>) orderItemRepository.findAll();
+        return (List<OrderItem>) orderItemRepository.findAllOrderItems(idOrder);
     }
 
     public OrderItem getOrderItem(long id){
@@ -22,7 +24,17 @@ public class OrderItemService {
     }
 
     public OrderItem insertUpdateOrderItem(OrderItem orderItem){
-        return orderItemRepository.save(orderItem);
+
+        if (orderItem.getItem() instanceof Product) {
+            if(((Product)orderItem.getItem()).getItemStatus() == ItemStatus.ENABLE){
+                return orderItemRepository.save(orderItem);
+            }
+        }else{
+
+            return orderItemRepository.save(orderItem);
+        }
+
+        return null;
     }
 
     public void deleteOrderItem(long id){
